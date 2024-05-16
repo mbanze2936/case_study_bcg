@@ -1,21 +1,25 @@
 """Initialize csv path files."""
+import os
+
 from pyspark.sql import SparkSession
 
 import yaml
 
 
 def load_config(config_file):
-    with open(config_file, 'r') as f:
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    config_path = os.path.join(root_dir, config_file)
+    with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
     return config
 
 
 config = load_config('config.yaml')
 
-primary_person_path = config['input']['primary_person']
-units_path = config['input']['units']
-damages_path = config['input']['damages']
-charges_path = config['input']['charges']
+primary_person_path = config['input']['primary_person_path']
+units_path = config['input']['units_path']
+damages_path = config['input']['damages_path']
+charges_path = config['input']['charges_path']
 
 output_dir = config['output']['analysis_results']
 logs_dir = config['output']['logs']
