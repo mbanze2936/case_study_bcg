@@ -1,4 +1,5 @@
-from pyspark.sql import SparkSession, Window
+"""Script for crash analysis."""
+from pyspark.sql import Window
 from pyspark.sql.functions import col, row_number
 
 
@@ -139,7 +140,7 @@ def crash_id_with_no_property_damage(damages_df, units_df):
                           .filter(col('DAMAGED_PROPERTY') == 'NONE')
                           .select(col('CRASH_ID')).distinct()
                           )
-    return property_damage_df.select(col('CRASH_ID'))
+    return property_damage_df.select(col('CRASH_ID')).count()
 
 
 def speeding_offence(primary_person_df, units_df, charges_df):
@@ -178,44 +179,3 @@ def speeding_offence(primary_person_df, units_df, charges_df):
     return top_5_vehicle_models.select(col('VEH_MAKE_ID'))
 
 
-def main():
-    spark = SparkSession.builder.appName("BCG_Crash_Analysis").getOrCreate()
-    primary_person_df = spark.read.csv('data/Primary_Person_use.csv', header=True)
-    units_df = spark.read.csv('data/Units_use.csv', header=True)
-    damages_df = spark.read.csv('data/Damages_use.csv', header=True)
-    charges_df = spark.read.csv('data/Charges_use.csv', header=True)
-
-    # Q1:
-    males_killed_greater_than_2(primary_person_df)
-
-    # Q2:
-    two_wheeler_count(units_df)
-
-    # Q3:
-    top_5_car_crash(primary_person_df, units_df)
-
-    # Q4
-    valid_driver_license_count(primary_person_df, units_df)
-
-    # Q5
-    state_with_highest_accidents_no_females(primary_person_df)
-
-    # Q6
-    vehicle_models_with_most_injurie(primary_person_df, units_df)
-
-    # Q7
-    top_ethnic_group_body_style(primary_person_df, units_df)
-
-    # Q8:
-    crash_due_to_alcohol_by_zip_code(primary_person_df)
-
-    # Q9:
-    crash_id_with_no_property_damage(damages_df, units_df)
-
-    # Q10:
-    speeding_offence(primary_person_df, units_df, charges_df)
-    spark.stop()
-
-
-if __name__ == "__main__":
-    main()
