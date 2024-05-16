@@ -1,0 +1,12 @@
+input:
+  primary_person_path: data/Primary_Person_use.csv
+  units_path: data/Units_use.csv
+  damages_path: data/Damages_use.csv
+  charges_path: data/Charges_use.csv
+
+output:
+  analysis_results: output/analysis_results/
+  logs: output/logs/
+  summary_reports: output/summary_reports/
+  visualizations: output/visualizations/
+
